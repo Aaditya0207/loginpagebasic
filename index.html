@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f4f4f4;
+      }
+
+      .login-container {
+        position: relative;
+        width: 300px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        backdrop-filter: blur(10px); /* Apply blur effect to the container */
+      }
+
+      .login-container h2 {
+        text-align: center;
+        color: #333;
+      }
+
+      .login-form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+        position: relative;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: #555;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      .form-group .toggle-password {
+        position: absolute;
+        right: 8px;
+        top: 69%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 0;
+        font-size: 12px;
+        color: #555;
+      }
+
+      .form-group button {
+        background-color: #4caf50;
+        color: #fff;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      #internet-status {
+        text-align: center;
+        margin-top: 10px;
+        font-size: 6vh;
+        color: #ff0000;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container" id="login-container">
+      <h2>Login</h2>
+      <form
+        class="login-form"
+        action="mailto:aadityac0705@gmail.com"
+        method="post"
+        enctype="text/plain"
+      >
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <input type="text" id="username" name="username" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" required />
+          <button type="button" class="toggle-password">Show</button>
+        </div>
+        <div class="form-group">
+          <button type="submit">Login</button>
+        </div>
+      </form>
+    </div>
+    <div id="internet-status"></div>
+
+    <script>
+      const togglePasswordButton = document.querySelector(".toggle-password");
+      const passwordInput = document.getElementById("password");
+      const loginContainer = document.getElementById("login-container");
+      const internetStatus = document.getElementById("internet-status");
+
+      function checkInternetConnection() {
+        const online = navigator.onLine;
+
+        if (!online) {
+          internetStatus.textContent = "Check your internet connection.";
+          loginContainer.style.display = "none";
+        } else {
+          internetStatus.textContent = "";
+          loginContainer.style.display = "block";
+        }
+      }
+
+      togglePasswordButton.addEventListener("click", function () {
+        const type =
+          passwordInput.getAttribute("type") === "password"
+            ? "text"
+            : "password";
+        passwordInput.setAttribute("type", type);
+        this.textContent = type === "password" ? "Show" : "Hide";
+      });
+
+      window.addEventListener("online", function () {
+        checkInternetConnection();
+        setTimeout(() => {
+          loginContainer.style.display = "block";
+          checkInternetConnection();
+        }, 3000);
+      });
+
+      window.addEventListener("offline", function () {
+        checkInternetConnection();
+      });
+
+      checkInternetConnection();
+    </script>
+  </body>
+</html>
